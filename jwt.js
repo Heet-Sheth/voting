@@ -9,7 +9,7 @@ const jwtMiddleware = (req, res, next) => {
     if (!token) return res.status(401).send('No token found');
 
     try {
-        const payload = jwt.verify(token, process.env.SECRET_KEY);
+        const payload = jwt.verify(token, process.env.SECRET_KEY | 'SECRET_KEY');
         req.user = payload;
         next();
     } catch (err) {
@@ -19,7 +19,7 @@ const jwtMiddleware = (req, res, next) => {
 };
 
 const generateToken = (userData) => {
-    return jwt.sign(userData, process.env.SECRET_KEY);
+    return jwt.sign(userData, process.env.SECRET_KEY | 'SECRET_KEY');
 };
 
 module.exports = { jwtMiddleware, generateToken };
